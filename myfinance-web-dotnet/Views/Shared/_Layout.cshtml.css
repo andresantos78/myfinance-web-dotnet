@@ -46,3 +46,11 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+
+tr .odd-row {
+   background-color: aliceblue;
+}
+
+tr .even-row {
+  background-color: #e1e1e1 !important;
+}

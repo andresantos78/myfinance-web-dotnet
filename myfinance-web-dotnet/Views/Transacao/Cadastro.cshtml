@@ -1,0 +1,59 @@
+@model TransacaoViewModel
+
+<div class="container">
+   <h1>Lançamento (Receita ou Despesa)</h1>
+   <br>
+   <br>
+   <form asp-controller="Transacao" asp-action="Cadastro" method="post">
+      <div class="container">
+         <input type=hidden id="txtId" class="form-control" asp-for="Id" />
+
+         <div class="mb-3">
+            <h6>Tipo Lançamento</h6>
+            <div class="form-check">
+               <label class="form-check-label">@Html.RadioButtonFor(m => m.Tipo, "D") Despesa</label>
+            </div>
+            <div class="form-check">
+            <label class="form-check-label">@Html.RadioButtonFor(m => m.Tipo, "R") Receita</label>
+            </div>
+            <span asp-validation-for="Tipo" class="text-danger"></span>
+         </div>
+         <div class="mb-3">
+            <label class="form-label">Data</label>
+            <input type=date id="txtData" class="form-control" asp-for="Data" />
+            <span asp-validation-for="Data" class="text-danger"></span>
+         </div>
+         <div class="mb-3">
+            <label class="form-label">Valor</label>
+            <input type=number id="txtValor" class="form-control" asp-for="Valor" />
+            <span asp-validation-for="Valor" class="text-danger"></span>
+         </div>
+         <div class="mb-3">
+            <label class="form-label">Conta</label>
+            <select id="txtConta" class="form-control form-select" asp-for="PlanoContaId"
+               asp-items="@(new SelectList(ViewBag.PlanoContaList, nameof(PlanoContaViewModel.Id), nameof(PlanoContaViewModel.Nome)))">
+                <option>Selecione a Conta</output></option>
+               </select>
+            <span asp-validation-for="PlanoContaId" class="text-danger"></span>
+         </div>
+         <div class="mb-3">
+            <label class="form-label">Histórico</label>
+            <textarea id="txtHistorico" class="form-control" asp-for="Historico" rows="3"></textarea>
+            <span asp-validation-for="Historico" class="text-danger"></span>
+         </div>
+         <div class="mb-3">
+            <button type="submit" class="btn btn-primary btn-lg">Salvar</button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="Voltar()">Cancelar</button>
+         </div>
+   </form>
+</div>
+
+<script>
+    function Voltar()
+    {
+        if (window.location.href.includes("Cadastro/"))
+            window.location.href = "../../Transacao/Index"
+        else
+            window.location.href = "../Transacao/Index"
+    }
+</script>

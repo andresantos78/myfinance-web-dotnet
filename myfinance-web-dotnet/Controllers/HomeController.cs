@@ -1,21 +1,36 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using myfinance_web_dotnet.Models;
+using myfinance_web_dotnet.Services;
 
 namespace myfinance_web_dotnet.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private readonly ITransacaoService _transacaoService;
+    public HomeController(ILogger<HomeController> logger, ITransacaoService transacaoService)
     {
         _logger = logger;
+        _transacaoService = transacaoService;
     }
 
     public IActionResult Index()
     {
-        return View();
+        var lstTransacoes = _transacaoService.ListarTransacoes();
+
+        var lstModel = new List<SimpleReportViewModel>();
+        lstModel.Add(new SimpleReportViewModel
+        {
+            DimensionOne = "Despesas",
+            Quantity = lstTransacoes.Where(x => x.Tipo == "D").Sum(x => x.Valor)
+        });
+        lstModel.Add(new SimpleReportViewModel
+        {
+            DimensionOne = "Receitas",
+            Quantity = lstTransacoes.Where(x => x.Tipo == "R").Sum(x => x.Valor)
+        });
+        return View(lstModel);
     }
 
     public IActionResult Privacy()
